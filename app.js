@@ -1,11 +1,11 @@
-const books = document.querySelectorAll(".book")
+const books = document.querySelectorAll(".book");
 
 books.forEach(book => {
 
-book.addEventListener("click",()=>{
+book.addEventListener("click", () => {
 
-alert("Book detail view (SwiftUI BookDetailView megfelelő)")
+alert("Book detail view (SwiftUI BookDetailView megfelelő)");
 
-})
+});
 
-})
+});
