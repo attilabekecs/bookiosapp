@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BookPlex – Web Preview</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">BP</div>
+      <div>
+        <div class="brandTitle">BookPlex</div>
+        <div class="brandSub">SwiftUI → HTML preview</div>
+      </div>
+    </div>
+
+    <div class="topActions" id="topActions"></div>
+  </header>
+
+  <main class="app" id="app"></main>
+
+  <nav class="tabbar" role="navigation" aria-label="Bottom tabs">
+    <button class="tab" data-tab="home" aria-label="Home">
+      <span class="tabIcon">✨</span><span class="tabLabel">Home</span>
+    </button>
+    <button class="tab" data-tab="library" aria-label="Library">
+      <span class="tabIcon">📚</span><span class="tabLabel">Library</span>
+    </button>
+    <button class="tab" data-tab="community" aria-label="Community">
+      <span class="tabIcon">👥</span><span class="tabLabel">Community</span>
+    </button>
+    <button class="tab" data-tab="requests" aria-label="Requests">
+      <span class="tabIcon">🔎</span><span class="tabLabel">Requests</span>
+    </button>
+    <button class="tab" data-tab="profile" aria-label="Profile">
+      <span class="tabIcon">👤</span><span class="tabLabel">Profile</span>
+    </button>
+  </nav>
+
+  <!-- Reader modal -->
+  <div class="modalOverlay hidden" id="readerOverlay" aria-hidden="true">
+    <div class="modal">
+      <div class="modalHeader">
+        <div class="modalTitle" id="readerTitle">Reader</div>
+        <button class="btn ghost" id="closeReaderBtn">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="readerMock">
+          <div class="readerToolbar">
+            <span class="pill"><span class="pillIcon">📄</span><span id="readerFormat">PDF</span></span>
+            <span class="pill"><span class="pillIcon">⏱️</span><span id="readerProgress">12%</span></span>
+            <span class="pill"><span class="pillIcon">🔖</span>Bookmark</span>
+          </div>
+
+          <div class="readerPage">
+            <div class="pageHint">Itt a SwiftUI ReaderRouterView / PDF/EPUB olvasó helye.</div>
+            <div class="pageBox">
+              <div class="pageLines">
+                <div class="line w80"></div><div class="line w95"></div><div class="line w90"></div>
+                <div class="line w85"></div><div class="line w92"></div><div class="line w70"></div>
+                <div class="line w96"></div><div class="line w88"></div><div class="line w78"></div>
+              </div>
+              <div class="pageFooter">Mock page • GitHub Pages preview</div>
+            </div>
+          </div>
+
+          <div class="readerActions">
+            <button class="btn" id="prevPageBtn">◀ Prev</button>
+            <button class="btn" id="nextPageBtn">Next ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
