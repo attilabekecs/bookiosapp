@@ -1,103 +1,315 @@
 <!DOCTYPE html>
 <html lang="hu">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BookPlex iOS Preview</title>
+<title>BookPlex</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
 
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#0f1115;
+color:white;
+display:flex;
+height:100vh;
+}
+
+.sidebar{
+width:230px;
+background:#151821;
+padding:25px;
+box-sizing:border-box;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+margin-bottom:40px;
+}
+
+.menu a{
+display:block;
+color:#c5c5c5;
+text-decoration:none;
+padding:12px 0;
+}
+
+.menu a:hover{
+color:white;
+}
+
+.main{
+flex:1;
+padding:30px;
+overflow:auto;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+margin-bottom:30px;
+}
+
+.search{
+background:#1c1f29;
+border:none;
+padding:10px 15px;
+color:white;
+border-radius:6px;
+width:260px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,160px);
+gap:25px;
+}
+
+.book{
+cursor:pointer;
+}
+
+.poster{
+width:160px;
+height:230px;
+background:#222;
+border-radius:8px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-size:13px;
+padding:10px;
+box-sizing:border-box;
+}
+
+.book-title{
+margin-top:8px;
+font-size:14px;
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:rgba(0,0,0,0.85);
+display:none;
+align-items:center;
+justify-content:center;
+}
+
+.modal-content{
+background:#151821;
+width:650px;
+padding:25px;
+border-radius:10px;
+display:flex;
+gap:20px;
+}
+
+.modal-poster{
+width:200px;
+height:300px;
+background:#222;
+border-radius:8px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:10px;
+}
+
+.modal-close{
+position:absolute;
+top:20px;
+right:40px;
+font-size:30px;
+cursor:pointer;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="sidebar">
 
-<header class="navbar">
-<div class="nav-title">BookPlex</div>
-</header>
-
-
-<main id="view">
-
-<section class="hero">
-
-<div class="hero-card">
-<h2>Fourth Wing</h2>
-<p>Rebecca Yarros</p>
+<div class="logo">
+📚 BookPlex
 </div>
 
-</section>
-
-
-<section class="row">
-
-<h3>Continue Reading</h3>
-
-<div class="scroll">
-
-<div class="book"></div>
-<div class="book"></div>
-<div class="book"></div>
-<div class="book"></div>
+<div class="menu">
+<a href="#">Kezdőlap</a>
+<a href="#">Könyvtár</a>
+<a href="#">Kedvencek</a>
+<a href="#">Legutóbb olvasott</a>
+</div>
 
 </div>
 
-</section>
+<div class="main">
 
+<div class="topbar">
 
-<section class="row">
+<h2>Könyvtár</h2>
 
-<h3>Recently Added</h3>
-
-<div class="scroll">
-
-<div class="book"></div>
-<div class="book"></div>
-<div class="book"></div>
-<div class="book"></div>
+<input
+class="search"
+placeholder="Keresés..."
+onkeyup="searchBooks(this.value)"
+>
 
 </div>
 
-</section>
-
-</main>
-
-
-
-<nav class="tabbar">
-
-<button class="tab active">
-🏠
-<span>Home</span>
-</button>
-
-<button class="tab">
-📚
-<span>Library</span>
-</button>
-
-<button class="tab">
-👥
-<span>Community</span>
-</button>
-
-<button class="tab">
-🔎
-<span>Requests</span>
-</button>
-
-<button class="tab">
-👤
-<span>Profile</span>
-</button>
-
-</nav>
+<div class="grid" id="bookGrid"></div>
 
 </div>
 
-<script src="app.js"></script>
+<div class="modal" id="modal">
+
+<div class="modal-close" onclick="closeModal()">✕</div>
+
+<div class="modal-content">
+
+<div class="modal-poster" id="modalPoster"></div>
+
+<div>
+
+<h2 id="modalTitle"></h2>
+
+<p id="modalAuthor"></p>
+
+<p id="modalDesc"></p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const books = [
+
+{
+title:"Fourth Wing",
+author:"Rebecca Yarros",
+description:"Violet Sorrengail belép a Basgiath War College sárkánylovas képzésébe.",
+},
+
+{
+title:"Iron Flame",
+author:"Rebecca Yarros",
+description:"A Fourth Wing folytatása, ahol Violetnek még nagyobb veszélyekkel kell szembenéznie.",
+},
+
+{
+title:"A Court of Thorns and Roses",
+author:"Sarah J. Maas",
+description:"Feyre egy mágikus világba kerül, ahol tündérek és ősi hatalmak uralkodnak.",
+},
+
+{
+title:"Throne of Glass",
+author:"Sarah J. Maas",
+description:"Egy bérgyilkos lány története aki a király bajnoka akar lenni.",
+},
+
+{
+title:"The Name of the Wind",
+author:"Patrick Rothfuss",
+description:"Kvothe legendájának története egy fogadó csendjében.",
+},
+
+{
+title:"Mistborn",
+author:"Brandon Sanderson",
+description:"Egy világ ahol a hamu hullik az égből és a nemesek uralkodnak.",
+},
+
+{
+title:"The Hobbit",
+author:"J.R.R. Tolkien",
+description:"Bilbo Baggins kalandja egy törpékből álló csapattal.",
+},
+
+{
+title:"The Witcher",
+author:"Andrzej Sapkowski",
+description:"Geralt a szörnyvadász kalandjai egy sötét fantasy világban.",
+},
+
+];
+
+let filteredBooks = books;
+
+function renderBooks(){
+
+const grid = document.getElementById("bookGrid");
+
+grid.innerHTML="";
+
+filteredBooks.forEach(book=>{
+
+const el=document.createElement("div");
+
+el.className="book";
+
+el.innerHTML=`
+
+<div class="poster">${book.title}</div>
+
+<div class="book-title">${book.title}</div>
+
+`;
+
+el.onclick=()=>openModal(book);
+
+grid.appendChild(el);
+
+});
+
+}
+
+function openModal(book){
+
+document.getElementById("modal").style.display="flex";
+
+document.getElementById("modalPoster").innerText=book.title;
+
+document.getElementById("modalTitle").innerText=book.title;
+
+document.getElementById("modalAuthor").innerText="Szerző: "+book.author;
+
+document.getElementById("modalDesc").innerText=book.description;
+
+}
+
+function closeModal(){
+
+document.getElementById("modal").style.display="none";
+
+}
+
+function searchBooks(query){
+
+query=query.toLowerCase();
+
+filteredBooks=books.filter(b=>
+b.title.toLowerCase().includes(query) ||
+b.author.toLowerCase().includes(query)
+);
+
+renderBooks();
+
+}
+
+renderBooks();
+
+</script>
 
 </body>
 </html>
